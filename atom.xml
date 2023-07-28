@@ -152,7 +152,7 @@ document.documentElement.style.fontSize = rootFontSize + &#39;px&#39;
 &lt;h3 id=&#34;1electron-v1369-win32-x64zip&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1electron-v1369-win32-x64zip&#34;&gt;#&lt;/a&gt; 1.electron-v13.6.9-win32-x64.zip&lt;/h3&gt;
 &lt;p&gt;&lt;img data-src=&#34;./electron-build-error/%E6%89%93%E5%8C%85%E6%8A%A5%E9%94%991.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
 &lt;h3 id=&#34;解决方案&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#解决方案&#34;&gt;#&lt;/a&gt; 解决方案：&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/electron/electron/releases/download/v13.6.9/electron-v13.6.9-win32-x64.zip&#34;&gt;https://github.com/electron/electron/releases/download/v13.6.9/electron-v13.6.9-win32-x64.zip&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9naXRodWIuY29tL2VsZWN0cm9uL2VsZWN0cm9uL3JlbGVhc2VzL2Rvd25sb2FkL3YxMy42LjkvZWxlY3Ryb24tdjEzLjYuOS13aW4zMi14NjQuemlw&#34;&gt;https://github.com/electron/electron/releases/download/v13.6.9/electron-v13.6.9-win32-x64.zip&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;离线下载 electron-v13.6.9-win32-x64.zip，再放到对应目录下:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;windows:C:\Users\Administrator\AppData\Local\electron\Cache
 Linux:~/.cache/electron
@@ -163,7 +163,7 @@ macOS:~/Library/Caches/electron
 &lt;h3 id=&#34;2wincodesign-2607z&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#2wincodesign-2607z&#34;&gt;#&lt;/a&gt; 2.winCodeSign-2.6.0.7z&lt;/h3&gt;
 &lt;p&gt;&lt;img data-src=&#34;./electron-build-error/%E6%89%93%E5%8C%85%E6%8A%A5%E9%94%992.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
 &lt;h3 id=&#34;解决方案-2&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#解决方案-2&#34;&gt;#&lt;/a&gt; 解决方案：&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z&#34;&gt;https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9naXRodWIuY29tL2VsZWN0cm9uLXVzZXJsYW5kL2VsZWN0cm9uLWJ1aWxkZXItYmluYXJpZXMvcmVsZWFzZXMvZG93bmxvYWQvd2luQ29kZVNpZ24tMi42LjAvd2luQ29kZVNpZ24tMi42LjAuN3o=&#34;&gt;https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;离线下载 winCodeSign-2.6.0.7z，再放到对应目录下:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;windows:C:\Users\Administrator\AppData\Local\electron-builder\Cache
 &lt;/code&gt;&lt;/pre&gt;
@@ -172,7 +172,7 @@ macOS:~/Library/Caches/electron
 &lt;h3 id=&#34;3nsis-30417z&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#3nsis-30417z&#34;&gt;#&lt;/a&gt; 3.nsis-3.0.4.1.7z&lt;/h3&gt;
 &lt;p&gt;&lt;img data-src=&#34;./electron-build-error/%E6%89%93%E5%8C%85%E6%8A%A5%E9%94%993.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
 &lt;h3 id=&#34;解决方案-3&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#解决方案-3&#34;&gt;#&lt;/a&gt; 解决方案：&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/electron-userland/electron-builder-binaries/releases/download/nsis-3.0.4.1/nsis-3.0.4.1.7z&#34;&gt;https://github.com/electron-userland/electron-builder-binaries/releases/download/nsis-3.0.4.1/nsis-3.0.4.1.7z&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9naXRodWIuY29tL2VsZWN0cm9uLXVzZXJsYW5kL2VsZWN0cm9uLWJ1aWxkZXItYmluYXJpZXMvcmVsZWFzZXMvZG93bmxvYWQvbnNpcy0zLjAuNC4xL25zaXMtMy4wLjQuMS43eg==&#34;&gt;https://github.com/electron-userland/electron-builder-binaries/releases/download/nsis-3.0.4.1/nsis-3.0.4.1.7z&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;离线下载 nsis-3.0.4.1.7z，再放到对应目录下:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;windows:C:\Users\Administrator\AppData\Local\electron-builder\Cache\nsis
 &lt;/code&gt;&lt;/pre&gt;
@@ -181,7 +181,7 @@ macOS:~/Library/Caches/electron
 &lt;h3 id=&#34;4nsis-resources-3417z&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#4nsis-resources-3417z&#34;&gt;#&lt;/a&gt; 4.nsis-resources-3.4.1.7z&lt;/h3&gt;
 &lt;p&gt;&lt;img data-src=&#34;./electron-build-error/%E6%89%93%E5%8C%85%E6%8A%A5%E9%94%994.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
 &lt;h3 id=&#34;解决方案-4&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#解决方案-4&#34;&gt;#&lt;/a&gt; 解决方案：&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/electron-userland/electron-builder-binaries/releases/download/nsis-resources-3.4.1/nsis-resources-3.4.1.7z&#34;&gt;https://github.com/electron-userland/electron-builder-binaries/releases/download/nsis-resources-3.4.1/nsis-resources-3.4.1.7z&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9naXRodWIuY29tL2VsZWN0cm9uLXVzZXJsYW5kL2VsZWN0cm9uLWJ1aWxkZXItYmluYXJpZXMvcmVsZWFzZXMvZG93bmxvYWQvbnNpcy1yZXNvdXJjZXMtMy40LjEvbnNpcy1yZXNvdXJjZXMtMy40LjEuN3o=&#34;&gt;https://github.com/electron-userland/electron-builder-binaries/releases/download/nsis-resources-3.4.1/nsis-resources-3.4.1.7z&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;离线下载 nsis-resources-3.4.1.7z，再放到对应目录下:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;windows:C:\Users\Administrator\AppData\Local\electron-builder\Cache\nsis
 &lt;/code&gt;&lt;/pre&gt;
