@@ -15,7 +15,8 @@
         <id>https://moorelxr.github.io/performance-optimize/</id>
         <title>性能优化</title>
         <link rel="alternate" href="https://moorelxr.github.io/performance-optimize/"/>
-        <content type="html">&lt;h1 id=&#34;性能优化&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#性能优化&#34;&gt;#&lt;/a&gt; 性能优化&lt;/h1&gt;
+        <content type="html">&lt;p&gt;&amp;lt;meta name=&amp;quot;referrer&amp;quot; content=&amp;quot;no-referrer&amp;quot; /&amp;gt;&lt;/p&gt;
+&lt;h1 id=&#34;性能优化&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#性能优化&#34;&gt;#&lt;/a&gt; 性能优化&lt;/h1&gt;
 &lt;h2 id=&#34;1documentcreatedocumentfragment创建文档碎片&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1documentcreatedocumentfragment创建文档碎片&#34;&gt;#&lt;/a&gt; 1.document.createDocumentFragment () 创建文档碎片&lt;/h2&gt;
 &lt;h3 id=&#34;定义&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#定义&#34;&gt;#&lt;/a&gt; 定义&lt;/h3&gt;
 &lt;p&gt;用例是创建文档片段，将元素附加到文档片段，然后将文档片段附加到 DOM 树，文档片段存在于内存中，并不在 DOM 树中，所以将子元素插入到文档片段时不会引起页面回流（对元素位置和几何上的计算）。因此，使用文档片段通常会带来更好的性能。&lt;/p&gt;
@@ -56,7 +57,8 @@ document.body.appendChild(fragment)
         <id>https://moorelxr.github.io/mobile-adaption/</id>
         <title>移动端适配方案</title>
         <link rel="alternate" href="https://moorelxr.github.io/mobile-adaption/"/>
-        <content type="html">&lt;h1 id=&#34;移动端适配&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#移动端适配&#34;&gt;#&lt;/a&gt; 移动端适配：&lt;/h1&gt;
+        <content type="html">&lt;p&gt;&amp;lt;meta name=&amp;quot;referrer&amp;quot; content=&amp;quot;no-referrer&amp;quot; /&amp;gt;&lt;/p&gt;
+&lt;h1 id=&#34;移动端适配&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#移动端适配&#34;&gt;#&lt;/a&gt; 移动端适配：&lt;/h1&gt;
 &lt;p&gt;在做移动端开发时，为了使移动端的页面在不同的手机上以同样的大小来显示，我们可以将页面的宽度固定，然后获取设备的宽度，可以得到我们之前设定的宽度与设备宽度的比例，再使用 HTML5 新增的 viewport 来对页面进行缩放，并固定不允许用户再重新缩放。&lt;/p&gt;
 &lt;p&gt;在 index.html 增加该配置&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;&amp;lt;meta
@@ -64,7 +66,7 @@ document.body.appendChild(fragment)
   content=&amp;quot;width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover&amp;quot;
 &amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&#34;rem适配淘宝和百度方案&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#rem适配淘宝和百度方案&#34;&gt;#&lt;/a&gt; rem 适配 (淘宝和百度方案)&lt;/h2&gt;
+&lt;h2 id=&#34;rem-适配淘宝和百度方案&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#rem-适配淘宝和百度方案&#34;&gt;#&lt;/a&gt; rem 适配 (淘宝和百度方案)&lt;/h2&gt;
 &lt;p&gt;计算公式：&lt;br /&gt;
 根字体 = （设备视口宽度 * 100） / 设计稿宽度&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;&amp;lt;script&amp;gt;
@@ -77,7 +79,7 @@ document.documentElement.style.fontSize = rootFontSize + &#39;px&#39;
 &amp;lt;/script&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;设置完根字体大小后，后续所有页面都以 rem 为单位，值为 设计稿的像素值 / 100，例如 14px = 0.14rem，这样在不用设备上都是 0.14rem, 但不同设备的 rem 代表的像素值不同，从而实现适配&lt;/p&gt;
-&lt;h2 id=&#34;vw适配&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#vw适配&#34;&gt;#&lt;/a&gt; vw 适配&lt;/h2&gt;
+&lt;h2 id=&#34;vw-适配&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#vw-适配&#34;&gt;#&lt;/a&gt; vw 适配&lt;/h2&gt;
 &lt;p&gt;它的特点很明显，没有 js 代码，但是兼容性却不好&lt;br /&gt;
 &lt;img data-src=&#34;./mobile-adaption/caniuse.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;vw: 把布局视口分成 100 份，1vw = 1% 的布局视口 = 1% 的视觉视口&lt;br /&gt;
@@ -102,7 +104,8 @@ document.documentElement.style.fontSize = rootFontSize + &#39;px&#39;
         <id>https://moorelxr.github.io/tool/</id>
         <title>办公工具合集</title>
         <link rel="alternate" href="https://moorelxr.github.io/tool/"/>
-        <content type="html">&lt;h1 id=&#34;办公工具合集&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#办公工具合集&#34;&gt;#&lt;/a&gt; 办公工具合集&lt;/h1&gt;
+        <content type="html">&lt;p&gt;&amp;lt;meta name=&amp;quot;referrer&amp;quot; content=&amp;quot;no-referrer&amp;quot; /&amp;gt;&lt;/p&gt;
+&lt;h1 id=&#34;办公工具合集&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#办公工具合集&#34;&gt;#&lt;/a&gt; 办公工具合集&lt;/h1&gt;
 &lt;h3 id=&#34;echart-社区&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#echart-社区&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt;echart 社区&lt;/h3&gt;
 &lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL2NoYXJ0Lm1hamgudG9wLw==&#34;&gt;http://chart.majh.top/&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;(ps: 各种丰富的 echart 图集效果)&lt;/p&gt;
@@ -146,7 +149,8 @@ document.documentElement.style.fontSize = rootFontSize + &#39;px&#39;
         <id>https://moorelxr.github.io/electron-build-error/</id>
         <title>electron打包错误</title>
         <link rel="alternate" href="https://moorelxr.github.io/electron-build-error/"/>
-        <content type="html">&lt;h1 id=&#34;electron-打包遇到的问题&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#electron-打包遇到的问题&#34;&gt;#&lt;/a&gt; electron 打包遇到的问题&lt;/h1&gt;
+        <content type="html">&lt;p&gt;&amp;lt;meta name=&amp;quot;referrer&amp;quot; content=&amp;quot;no-referrer&amp;quot; /&amp;gt;&lt;/p&gt;
+&lt;h1 id=&#34;electron-打包遇到的问题&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#electron-打包遇到的问题&#34;&gt;#&lt;/a&gt; electron 打包遇到的问题&lt;/h1&gt;
 &lt;h2 id=&#34;一-网络下载失败&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#一-网络下载失败&#34;&gt;#&lt;/a&gt; 一、网络下载失败&lt;/h2&gt;
 &lt;p&gt;electron 打包过程中，由于网络原因（我是内网开发），下载 github 上的包出错，主要有以下包：&lt;/p&gt;
 &lt;h3 id=&#34;1electron-v1369-win32-x64zip&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1electron-v1369-win32-x64zip&#34;&gt;#&lt;/a&gt; 1.electron-v13.6.9-win32-x64.zip&lt;/h3&gt;
@@ -206,7 +210,8 @@ macOS:~/Library/Caches/electron
         <id>https://moorelxr.github.io/electron-multi-window/</id>
         <title>electron开启多窗口</title>
         <link rel="alternate" href="https://moorelxr.github.io/electron-multi-window/"/>
-        <content type="html">&lt;h1 id=&#34;electron-显示多个窗口&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#electron-显示多个窗口&#34;&gt;#&lt;/a&gt; electron 显示多个窗口&lt;/h1&gt;
+        <content type="html">&lt;p&gt;&amp;lt;meta name=&amp;quot;referrer&amp;quot; content=&amp;quot;no-referrer&amp;quot; /&amp;gt;&lt;/p&gt;
+&lt;h1 id=&#34;electron-显示多个窗口&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#electron-显示多个窗口&#34;&gt;#&lt;/a&gt; electron 显示多个窗口&lt;/h1&gt;
 &lt;p&gt;主进程：&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;import &amp;#123; app, BrowserWindow, ipcMain, Notification &amp;#125; from &#39;electron&#39;
 
@@ -249,7 +254,8 @@ ipcMain.on(&#39;loading-window&#39;, async (event, arg) =&amp;gt; &amp;#123;
         <id>https://moorelxr.github.io/electron-notification/</id>
         <title>electron消息提醒</title>
         <link rel="alternate" href="https://moorelxr.github.io/electron-notification/"/>
-        <content type="html">&lt;h1 id=&#34;electron-消息通知&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#electron-消息通知&#34;&gt;#&lt;/a&gt; electron 消息通知&lt;/h1&gt;
+        <content type="html">&lt;p&gt;&amp;lt;meta name=&amp;quot;referrer&amp;quot; content=&amp;quot;no-referrer&amp;quot; /&amp;gt;&lt;/p&gt;
+&lt;h1 id=&#34;electron-消息通知&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#electron-消息通知&#34;&gt;#&lt;/a&gt; electron 消息通知&lt;/h1&gt;
 &lt;h3 id=&#34;electron-提供-api-对操作系统发桌面通知消息的位置和样式保留各自系统原生的样式&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#electron-提供-api-对操作系统发桌面通知消息的位置和样式保留各自系统原生的样式&#34;&gt;#&lt;/a&gt; electron 提供 API 对操作系统发桌面通知，消息的位置和样式保留各自系统原生的样式&lt;/h3&gt;
 &lt;p&gt;注意：消息展示必须确保系统设置允许接收通知消息&lt;/p&gt;
 &lt;p&gt;主进程（background.js）：&lt;/p&gt;
@@ -290,7 +296,8 @@ export default&amp;#123;
         <id>https://moorelxr.github.io/electron-tray/</id>
         <title>electron系统托盘</title>
         <link rel="alternate" href="https://moorelxr.github.io/electron-tray/"/>
-        <content type="html">&lt;h1 id=&#34;electron-创建系统托盘&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#electron-创建系统托盘&#34;&gt;#&lt;/a&gt; electron 创建系统托盘&lt;/h1&gt;
+        <content type="html">&lt;p&gt;&amp;lt;meta name=&amp;quot;referrer&amp;quot; content=&amp;quot;no-referrer&amp;quot; /&amp;gt;&lt;/p&gt;
+&lt;h1 id=&#34;electron-创建系统托盘&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#electron-创建系统托盘&#34;&gt;#&lt;/a&gt; electron 创建系统托盘&lt;/h1&gt;
 &lt;p&gt;主进程（background.js）：&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;import &amp;#123; app, BrowserWindow, ipcMain, Tray, Menu, nativeImage &amp;#125; from &#39;electron&#39;
 
@@ -352,7 +359,8 @@ function createTrayIcon() &amp;#123;
         <id>https://moorelxr.github.io/electron-process-communicate/</id>
         <title>electron进程通信</title>
         <link rel="alternate" href="https://moorelxr.github.io/electron-process-communicate/"/>
-        <content type="html">&lt;h1 id=&#34;electron-进程间通信&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#electron-进程间通信&#34;&gt;#&lt;/a&gt; electron 进程间通信&lt;/h1&gt;
+        <content type="html">&lt;p&gt;&amp;lt;meta name=&amp;quot;referrer&amp;quot; content=&amp;quot;no-referrer&amp;quot; /&amp;gt;&lt;/p&gt;
+&lt;h1 id=&#34;electron-进程间通信&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#electron-进程间通信&#34;&gt;#&lt;/a&gt; electron 进程间通信&lt;/h1&gt;
 &lt;h2 id=&#34;electron-为我们提供了-2-个-ipc进程间通信模块称为ipcmain和ipcrender&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#electron-为我们提供了-2-个-ipc进程间通信模块称为ipcmain和ipcrender&#34;&gt;#&lt;/a&gt; electron 为我们提供了 2 个 IPC (进程间通信) 模块，称为 &lt;code&gt;ipcMain&lt;/code&gt;  和 &lt;code&gt;ipcRender&lt;/code&gt;&lt;/h2&gt;
 &lt;p&gt;ipcMain：主进程向渲染进程的异步通信&lt;/p&gt;
 &lt;p&gt;ipcRenderer：渲染进程向主进程发送消息&lt;/p&gt;
@@ -440,7 +448,8 @@ ipcMain.on(&#39;openfile&#39;, (event) =&amp;gt; &amp;#123;
         <id>https://moorelxr.github.io/electron-introduce/</id>
         <title>eletron介绍</title>
         <link rel="alternate" href="https://moorelxr.github.io/electron-introduce/"/>
-        <content type="html">&lt;h1 id=&#34;一-electron介绍&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#一-electron介绍&#34;&gt;#&lt;/a&gt; 一、electron 介绍&lt;/h1&gt;
+        <content type="html">&lt;p&gt;&amp;lt;meta name=&amp;quot;referrer&amp;quot; content=&amp;quot;no-referrer&amp;quot; /&amp;gt;&lt;/p&gt;
+&lt;h1 id=&#34;一-electron-介绍&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#一-electron-介绍&#34;&gt;#&lt;/a&gt; 一、electron 介绍&lt;/h1&gt;
 &lt;p&gt;&lt;em&gt;官网 (&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cuZWxlY3Ryb25qcy5vcmcv&#34;&gt;https://www.electronjs.org/&lt;/span&gt;)&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;使用 JavaScript，HTML 和 CSS 构建跨平台的桌面应用程序，通过将 Chromium 和 Node.js 合并到同一个运行环境中，兼容 Mac、Windows 和 Linux，可以构建出三个平台的应用程序。&lt;/p&gt;
 &lt;p&gt;&lt;img data-src=&#34;./electron-introduce/1.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
