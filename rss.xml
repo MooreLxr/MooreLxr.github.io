@@ -1,0 +1,485 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+    <channel>
+        <title>行到水穷处，坐看云起时</title>
+        <subtitle>=^-^=</subtitle>
+        <icon>https://moorelxr.github.io/images/favicon.ico</icon>
+        <link>https://MooreLxr.github.io</link>
+        <author>
+          <name>sunrise</name>
+        </author>
+        <description>海的尽头是什么？</description>
+        <language>zh-CN</language>
+        <pubDate>Thu, 27 Jul 2023 11:52:04 +0800</pubDate>
+        <lastBuildDate>Thu, 27 Jul 2023 11:52:04 +0800</lastBuildDate>
+        <category term="心之所想" />
+        <category term="" />
+        <item>
+            <guid isPermalink="true">https://moorelxr.github.io/performance-optimize/</guid>
+            <title>性能优化</title>
+            <link>https://moorelxr.github.io/performance-optimize/</link>
+            <category term="前端" scheme="https://moorelxr.github.io/tags/%E5%89%8D%E7%AB%AF/" />
+            <pubDate>Thu, 27 Jul 2023 11:52:04 +0800</pubDate>
+            <description><![CDATA[ &lt;h1 id=&#34;性能优化&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#性能优化&#34;&gt;#&lt;/a&gt; 性能优化&lt;/h1&gt;
+&lt;h2 id=&#34;1documentcreatedocumentfragment创建文档碎片&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1documentcreatedocumentfragment创建文档碎片&#34;&gt;#&lt;/a&gt; 1.document.createDocumentFragment () 创建文档碎片&lt;/h2&gt;
+&lt;h3 id=&#34;定义&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#定义&#34;&gt;#&lt;/a&gt; 定义&lt;/h3&gt;
+&lt;p&gt;用例是创建文档片段，将元素附加到文档片段，然后将文档片段附加到 DOM 树，文档片段存在于内存中，并不在 DOM 树中，所以将子元素插入到文档片段时不会引起页面回流（对元素位置和几何上的计算）。因此，使用文档片段通常会带来更好的性能。&lt;/p&gt;
+&lt;p&gt;举例：&lt;/p&gt;
+&lt;p&gt;当我们需要往 body 中添加大量节点时，按下面这种方式，每次循环都往 body 中添加节点会导致浏览器频繁重排重绘，非常影响性能&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;for (let i = 0; i &amp;lt; 500; i++) &amp;#123;
+  let node = document.createElement(&#39;span&#39;)
+  let iNode = document.createElement(&#39;i&#39;)
+  node.appendChild(iNode)
+  document.body.appendChild(node)
+&amp;#125;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;改进，创建 div 节点，循环创建的节点统一存在这个 div 中，然后再将 div 添加到 body 中，但缺点是要在 body 中多添加了一层 div 包裹，而 document.createDocumentFragment () 就不会产生额外的节点&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;let oDiv = document.createElement(&#39;div&#39;)
+for (let i = 0; i &amp;lt; 500; i++) &amp;#123;
+  let node = document.createElement(&#39;span&#39;)
+  let iNode = document.createElement(&#39;i&#39;)
+  node.appendChild(iNode)
+  oDiv.appendChild(node) // 动态创建的节点统一存在oDiv中
+&amp;#125;
+document.body.appendChild(oDiv)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;使用 document.createDocumentFragment () 进行优化，这种方式不会产生额外的 DOM 元素&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;let fragment = document.createDocumentFragment();
+for (let i = 0; i &amp;lt; 500; i++) &amp;#123;
+  let node = document.createElement(&#39;span&#39;)
+  let iNode = document.createElement(&#39;i&#39;)
+  node.appendChild(iNode)
+  fragment.appendChild(node) // 动态创建的节点统一存在fragment中
+&amp;#125;
+document.body.appendChild(fragment)
+&lt;/code&gt;&lt;/pre&gt;
+ ]]></description>
+        </item>
+        <item>
+            <guid isPermalink="true">https://moorelxr.github.io/mobile-adaption/</guid>
+            <title>移动端适配方案</title>
+            <link>https://moorelxr.github.io/mobile-adaption/</link>
+            <category term="前端" scheme="https://moorelxr.github.io/tags/%E5%89%8D%E7%AB%AF/" />
+            <pubDate>Mon, 03 Apr 2023 19:31:09 +0800</pubDate>
+            <description><![CDATA[ &lt;h1 id=&#34;移动端适配&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#移动端适配&#34;&gt;#&lt;/a&gt; 移动端适配：&lt;/h1&gt;
+&lt;p&gt;在做移动端开发时，为了使移动端的页面在不同的手机上以同样的大小来显示，我们可以将页面的宽度固定，然后获取设备的宽度，可以得到我们之前设定的宽度与设备宽度的比例，再使用 HTML5 新增的 viewport 来对页面进行缩放，并固定不允许用户再重新缩放。&lt;/p&gt;
+&lt;p&gt;在 index.html 增加该配置&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;meta
+  name=&amp;quot;viewport&amp;quot;
+  content=&amp;quot;width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,viewport-fit=cover&amp;quot;
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;rem适配淘宝和百度方案&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#rem适配淘宝和百度方案&#34;&gt;#&lt;/a&gt; rem 适配 (淘宝和百度方案)&lt;/h2&gt;
+&lt;p&gt;计算公式：&lt;br /&gt;
+根字体 = （设备视口宽度 * 100） / 设计稿宽度&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;script&amp;gt;
+// 获取布局视口宽度
+const dpWidth = document.documentElement.clientWidth
+// 计算根字体大小
+const rootFontSize = (dpWidth * 100) / 375
+// 设置根字体大小
+document.documentElement.style.fontSize = rootFontSize + &#39;px&#39;
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;设置完根字体大小后，后续所有页面都以 rem 为单位，值为 设计稿的像素值 / 100，例如 14px = 0.14rem，这样在不用设备上都是 0.14rem, 但不同设备的 rem 代表的像素值不同，从而实现适配&lt;/p&gt;
+&lt;h2 id=&#34;vw适配&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#vw适配&#34;&gt;#&lt;/a&gt; vw 适配&lt;/h2&gt;
+&lt;p&gt;它的特点很明显，没有 js 代码，但是兼容性却不好&lt;br /&gt;
+&lt;img data-src=&#34;./mobile-adaption/caniuse.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;vw: 把布局视口分成 100 份，1vw = 1% 的布局视口 = 1% 的视觉视口&lt;br /&gt;
+ vh: 就是 1% 的视口高度&lt;br /&gt;
+用 less 计算&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;@basic: 375 / 100vw;
+*&amp;#123;
+  margin: 0;
+  padding: 0;
+&amp;#125;
+.demo&amp;#123;
+  width: (100/@basic);
+  height: (100/@basic);
+  background-color: black;
+&amp;#125;
+&lt;/code&gt;&lt;/pre&gt;
+ ]]></description>
+        </item>
+        <item>
+            <guid isPermalink="true">https://moorelxr.github.io/tool/</guid>
+            <title>办公工具合集</title>
+            <link>https://moorelxr.github.io/tool/</link>
+            <category term="工具" scheme="https://moorelxr.github.io/tags/%E5%B7%A5%E5%85%B7/" />
+            <pubDate>Sat, 11 Feb 2023 18:00:53 +0800</pubDate>
+            <description><![CDATA[ &lt;h1 id=&#34;办公工具合集&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#办公工具合集&#34;&gt;#&lt;/a&gt; 办公工具合集&lt;/h1&gt;
+&lt;h3 id=&#34;echart-社区&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#echart-社区&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt;echart 社区&lt;/h3&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL2NoYXJ0Lm1hamgudG9wLw==&#34;&gt;http://chart.majh.top/&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;(ps: 各种丰富的 echart 图集效果)&lt;/p&gt;
+&lt;h3 id=&#34;兼容性查询&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#兼容性查询&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt; 兼容性查询&lt;/h3&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9jYW5pdXNlLmNvbS8=&#34;&gt;https://caniuse.com/&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;在线-ps&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#在线-ps&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt; 在线 ps&lt;/h3&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9wcy5nYW9kaW5nLmNvbS8jLw==&#34;&gt;https://ps.gaoding.com/#/&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;文叔叔在线文件传输工具&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#文叔叔在线文件传输工具&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt; 文叔叔（在线文件传输工具）&lt;/h3&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cud2Vuc2h1c2h1LmNuLw==&#34;&gt;https://www.wenshushu.cn/&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;ps: 拿着取件码去取你的文件，跟取快递一样&lt;sup&gt; -&lt;/sup&gt;&lt;/p&gt;
+&lt;h3 id=&#34;拷贝兔在线文件传输工具&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#拷贝兔在线文件传输工具&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt; 拷贝兔（在线文件传输工具）&lt;/h3&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9jcC5hbnlrbmV3LmNvbS8=&#34;&gt;https://cp.anyknew.com/&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;ps: 拿着取件码去取你的文件，跟取快递一样&lt;sup&gt; -&lt;/sup&gt;&lt;/p&gt;
+&lt;h3 id=&#34;图片处理工具合集&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#图片处理工具合集&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt; 图片处理工具合集&lt;/h3&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cueWFzdW90dS5jb20vdHVwaWFueWFzdW8=&#34;&gt;https://www.yasuotu.com/tupianyasuo&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;线上办公资源ui-办公资源&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#线上办公资源ui-办公资源&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt; 线上办公资源：（UI、办公资源）&lt;/h3&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9uYXYuc2Fua2tpLmNvbS8jL2luZGV4&#34;&gt;https://nav.sankki.com/#/index&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;ppt-模板免费下载&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#ppt-模板免费下载&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt;ppt 模板免费下载：&lt;/h3&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cuMnBwdC5jb20vcHB0Lmh0bWw=&#34;&gt;https://www.2ppt.com/ppt.html&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cuNTFwcHRtb2Jhbi5jb20vZS9zZWFyY2gvcmVzdWx0Lz9zZWFyY2hpZD0yNzgyMA==&#34;&gt;https://www.51pptmoban.com/e/search/result/?searchid=27820&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;微博图床&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#微博图床&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt; 微博图床&lt;/h3&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9waWMuZ2ltaG95LmNvbS8=&#34;&gt;https://pic.gimhoy.com/&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;云盘资源搜索平台&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#云盘资源搜索平台&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt; 云盘资源搜索平台&lt;/h3&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly91cHl1bnNvLmNvbS8=&#34;&gt;https://upyunso.com/&lt;/span&gt;&lt;/p&gt;
+&lt;h1 id=&#34;娱乐网站合集&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#娱乐网站合集&#34;&gt;#&lt;/a&gt; 娱乐网站合集&lt;/h1&gt;
+&lt;h3 id=&#34;厂长资源&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#厂长资源&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt; 厂长资源&lt;/h3&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9jenp5MDEuY29tLw==&#34;&gt;https://czzy01.com/&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;小众技术&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#小众技术&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt; 小众技术&lt;/h3&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cueGlhb3pob25namlzaHUuY29tLw==&#34;&gt;https://www.xiaozhongjishu.com/&lt;/span&gt;&lt;/p&gt;
+&lt;h1 id=&#34;找工作合集&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#找工作合集&#34;&gt;#&lt;/a&gt; 找工作合集&lt;/h1&gt;
+&lt;h3 id=&#34;知页简历&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#知页简历&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt; 知页简历&lt;/h3&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cuemhpeWVhcHAuY29tLw==&#34;&gt;https://www.zhiyeapp.com/&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;(ps: 提供免费简历模板、在线编辑)&lt;/p&gt;
+&lt;h3 id=&#34;ai-简历&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#ai-简历&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt;AI 简历&lt;/h3&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cuY2h6aGtlamkuY29tLw==&#34;&gt;https://www.chzhkeji.com/&lt;/span&gt;&lt;/p&gt;
+ ]]></description>
+        </item>
+        <item>
+            <guid isPermalink="true">https://moorelxr.github.io/electron-build-error/</guid>
+            <title>electron打包错误</title>
+            <link>https://moorelxr.github.io/electron-build-error/</link>
+            <category term="electron" scheme="https://moorelxr.github.io/tags/electron/" />
+            <pubDate>Tue, 11 Oct 2022 18:05:51 +0800</pubDate>
+            <description><![CDATA[ &lt;h1 id=&#34;electron-打包遇到的问题&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#electron-打包遇到的问题&#34;&gt;#&lt;/a&gt; electron 打包遇到的问题&lt;/h1&gt;
+&lt;h2 id=&#34;一-网络下载失败&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#一-网络下载失败&#34;&gt;#&lt;/a&gt; 一、网络下载失败&lt;/h2&gt;
+&lt;p&gt;electron 打包过程中，由于网络原因（我是内网开发），下载 github 上的包出错，主要有以下包：&lt;/p&gt;
+&lt;h3 id=&#34;1electron-v1369-win32-x64zip&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1electron-v1369-win32-x64zip&#34;&gt;#&lt;/a&gt; 1.electron-v13.6.9-win32-x64.zip&lt;/h3&gt;
+&lt;p&gt;&lt;img data-src=&#34;./electron-build-error/%E6%89%93%E5%8C%85%E6%8A%A5%E9%94%991.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;解决方案&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#解决方案&#34;&gt;#&lt;/a&gt; 解决方案：&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/electron/electron/releases/download/v13.6.9/electron-v13.6.9-win32-x64.zip&#34;&gt;https://github.com/electron/electron/releases/download/v13.6.9/electron-v13.6.9-win32-x64.zip&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;离线下载 electron-v13.6.9-win32-x64.zip，再放到对应目录下:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;windows:C:\Users\Administrator\AppData\Local\electron\Cache
+Linux:~/.cache/electron
+macOS:~/Library/Caches/electron
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;如图：&lt;br /&gt;
+&lt;img data-src=&#34;./electron-build-error/%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B31.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;2wincodesign-2607z&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#2wincodesign-2607z&#34;&gt;#&lt;/a&gt; 2.winCodeSign-2.6.0.7z&lt;/h3&gt;
+&lt;p&gt;&lt;img data-src=&#34;./electron-build-error/%E6%89%93%E5%8C%85%E6%8A%A5%E9%94%992.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;解决方案-2&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#解决方案-2&#34;&gt;#&lt;/a&gt; 解决方案：&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z&#34;&gt;https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;离线下载 winCodeSign-2.6.0.7z，再放到对应目录下:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;windows:C:\Users\Administrator\AppData\Local\electron-builder\Cache
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;如图：&lt;br /&gt;
+&lt;img data-src=&#34;./electron-build-error/%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B32.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;3nsis-30417z&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#3nsis-30417z&#34;&gt;#&lt;/a&gt; 3.nsis-3.0.4.1.7z&lt;/h3&gt;
+&lt;p&gt;&lt;img data-src=&#34;./electron-build-error/%E6%89%93%E5%8C%85%E6%8A%A5%E9%94%993.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;解决方案-3&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#解决方案-3&#34;&gt;#&lt;/a&gt; 解决方案：&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/electron-userland/electron-builder-binaries/releases/download/nsis-3.0.4.1/nsis-3.0.4.1.7z&#34;&gt;https://github.com/electron-userland/electron-builder-binaries/releases/download/nsis-3.0.4.1/nsis-3.0.4.1.7z&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;离线下载 nsis-3.0.4.1.7z，再放到对应目录下:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;windows:C:\Users\Administrator\AppData\Local\electron-builder\Cache\nsis
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;如图：&lt;br /&gt;
+&lt;img data-src=&#34;./electron-build-error/%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B33.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;4nsis-resources-3417z&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#4nsis-resources-3417z&#34;&gt;#&lt;/a&gt; 4.nsis-resources-3.4.1.7z&lt;/h3&gt;
+&lt;p&gt;&lt;img data-src=&#34;./electron-build-error/%E6%89%93%E5%8C%85%E6%8A%A5%E9%94%994.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;解决方案-4&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#解决方案-4&#34;&gt;#&lt;/a&gt; 解决方案：&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/electron-userland/electron-builder-binaries/releases/download/nsis-resources-3.4.1/nsis-resources-3.4.1.7z&#34;&gt;https://github.com/electron-userland/electron-builder-binaries/releases/download/nsis-resources-3.4.1/nsis-resources-3.4.1.7z&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;离线下载 nsis-resources-3.4.1.7z，再放到对应目录下:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;windows:C:\Users\Administrator\AppData\Local\electron-builder\Cache\nsis
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;如图：&lt;br /&gt;
+&lt;img data-src=&#34;./electron-build-error/%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B34.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;再次打包，成功了！！！&lt;/p&gt;
+&lt;h2 id=&#34;二-国产操作系统通信-uos-arm64-版&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#二-国产操作系统通信-uos-arm64-版&#34;&gt;#&lt;/a&gt; 二、国产操作系统（通信 UOS arm64 版）&lt;/h2&gt;
+&lt;p&gt;打包流程参考：&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cuY25ibG9ncy5jb20vdHV5aWxlMDA2L3AvMTYzOTk3NDUuaHRtbA==&#34;&gt;linux 打包&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;1-arm64-适配&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#1-arm64-适配&#34;&gt;#&lt;/a&gt; 1. arm64 适配:&lt;/h3&gt;
+&lt;p&gt;安装完 node.js、vscode 等必要的开发环境后，在通信 UOS arm64 位下打包 electron 项目依然会报错&lt;br /&gt;
+&lt;img data-src=&#34;./electron-build-error/linux/arm64.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;从报错信息可以看到，electron 在 linux 下使用 fpm 进行打包，然而下载的是 x86 的包，而不是 arm64 架构的包&lt;/p&gt;
+&lt;h4 id=&#34;解决方案-5&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#解决方案-5&#34;&gt;#&lt;/a&gt; 解决方案：&lt;/h4&gt;
+&lt;p&gt;在 x86 上交叉编译出 arm64 的包，重新打包一下成功了！！！&lt;/p&gt;
+&lt;p&gt;🤧 记录下踩坑合集，下回开发效率一定冲冲冲 🚀🚀🚀&lt;/p&gt;
+&lt;p&gt;内网开发真的太痛苦了 😭😭😭&lt;/p&gt;
+ ]]></description>
+        </item>
+        <item>
+            <guid isPermalink="true">https://moorelxr.github.io/electron-multi-window/</guid>
+            <title>electron开启多窗口</title>
+            <link>https://moorelxr.github.io/electron-multi-window/</link>
+            <category term="electron" scheme="https://moorelxr.github.io/tags/electron/" />
+            <pubDate>Tue, 11 Oct 2022 18:04:06 +0800</pubDate>
+            <description><![CDATA[ &lt;h1 id=&#34;electron-显示多个窗口&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#electron-显示多个窗口&#34;&gt;#&lt;/a&gt; electron 显示多个窗口&lt;/h1&gt;
+&lt;p&gt;主进程：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import &amp;#123; app, BrowserWindow, ipcMain, Notification &amp;#125; from &#39;electron&#39;
+
+let win
+let loadingWin
+function createWindow() &amp;#123;
+  win = new BrowserWindow(&amp;#123;
+    width: 1024,
+    height: 768
+  &amp;#125;)
+  // 加载另一个窗口
+  loadingWin = new BrowserWindow(&amp;#123;
+    width: 350,
+    height: 356,
+    show: false
+  &amp;#125;)
+  if (process.env.WEBPACK_DEV_SERVER_URL) &amp;#123; // 开发环境
+    await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
+    await loadingWin.loadURL(process.env.WEBPACK_DEV_SERVER_URL + &#39;#/loading&#39;)
+    if (!process.env.IS_TEST) win.webContents.openDevTools()
+  &amp;#125; else &amp;#123;
+    createProtocol(&#39;app&#39;)
+    win.loadURL(&#39;app://./index.html&#39;)
+    loadingWin.loadURL(&#39;app://./index.html#/loading&#39;) // 加载窗口展示的页面
+  &amp;#125;
+&amp;#125;
+// 打开或关闭loading窗口
+ipcMain.on(&#39;loading-window&#39;, async (event, arg) =&amp;gt; &amp;#123;
+  if (arg === &#39;open&#39;) loadingWin.show()
+  else if (arg === &#39;close&#39;) loadingWin.hide()
+&amp;#125;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img data-src=&#34;./electron-multi-window/preview.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;🚀&lt;/p&gt;
+ ]]></description>
+        </item>
+        <item>
+            <guid isPermalink="true">https://moorelxr.github.io/electron-notification/</guid>
+            <title>electron消息提醒</title>
+            <link>https://moorelxr.github.io/electron-notification/</link>
+            <category term="electron" scheme="https://moorelxr.github.io/tags/electron/" />
+            <pubDate>Tue, 11 Oct 2022 18:03:20 +0800</pubDate>
+            <description><![CDATA[ &lt;h1 id=&#34;electron-消息通知&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#electron-消息通知&#34;&gt;#&lt;/a&gt; electron 消息通知&lt;/h1&gt;
+&lt;h3 id=&#34;electron-提供-api-对操作系统发桌面通知消息的位置和样式保留各自系统原生的样式&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#electron-提供-api-对操作系统发桌面通知消息的位置和样式保留各自系统原生的样式&#34;&gt;#&lt;/a&gt; electron 提供 API 对操作系统发桌面通知，消息的位置和样式保留各自系统原生的样式&lt;/h3&gt;
+&lt;p&gt;注意：消息展示必须确保系统设置允许接收通知消息&lt;/p&gt;
+&lt;p&gt;主进程（background.js）：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import &amp;#123; app, BrowserWindow, ipcMain, Notification &amp;#125; from &#39;electron&#39;
+
+// 消息通知
+ipcMain.on(&#39;show-notification&#39;, (event, arg) =&amp;gt; &amp;#123;
+  const notifyObj = new Notification(&amp;#123;
+    title: arg.title,
+    body: arg.detail,
+    icon: path.join(__static, arg.icon || &#39;icons/cloud_client.png&#39;) // __static指向public文件夹
+  &amp;#125;)
+  notifyObj.show()
+&amp;#125;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;渲染进程：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import &amp;#123; ipcRenderer &amp;#125; from &#39;electron&#39;
+export default&amp;#123;
+  mounted() &amp;#123;
+    sendMessage() &amp;#123;
+      ipcRenderer.send(&#39;show-notification&#39;, &amp;#123;
+        title: &#39;云应用&#39;,
+        detail: &#39;文件传输成功&#39;,
+        icon: &#39;icons/success.png&#39;
+      &amp;#125;)
+    &amp;#125;
+  &amp;#125;
+&amp;#125;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img data-src=&#34;./electron-notification/preview.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;🤔 以上是最简单的使用案例，其他参数请移步&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cuZWxlY3Ryb25qcy5vcmcvemgvZG9jcy9sYXRlc3QvYXBpL25vdGlmaWNhdGlvbg==&#34;&gt;官网&lt;/span&gt;查看详细信息&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;^_^&lt;/code&gt;  有问题欢迎指出...&lt;/p&gt;
+ ]]></description>
+        </item>
+        <item>
+            <guid isPermalink="true">https://moorelxr.github.io/electron-tray/</guid>
+            <title>electron系统托盘</title>
+            <link>https://moorelxr.github.io/electron-tray/</link>
+            <category term="electron" scheme="https://moorelxr.github.io/tags/electron/" />
+            <pubDate>Tue, 11 Oct 2022 18:02:35 +0800</pubDate>
+            <description><![CDATA[ &lt;h1 id=&#34;electron-创建系统托盘&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#electron-创建系统托盘&#34;&gt;#&lt;/a&gt; electron 创建系统托盘&lt;/h1&gt;
+&lt;p&gt;主进程（background.js）：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import &amp;#123; app, BrowserWindow, ipcMain, Tray, Menu, nativeImage &amp;#125; from &#39;electron&#39;
+
+let win
+function createWindow() &amp;#123;
+  // 创建窗口
+  ...
+  createTrayIcon()
+&amp;#125;
+
+// 创建系统托盘
+let tray
+function createTrayIcon() &amp;#123;
+  const iconPath = nativeImage.createFromPath(path.join(__static, &#39;icons/cloud_client.png&#39;)) // __static指向public文件夹
+  tray = new Tray(iconPath)
+  const contextMenu = Menu.buildFromTemplate([
+    &amp;#123;
+      label: &#39;产品介绍&#39;,
+      click: () =&amp;gt; &amp;#123;
+        dialog.showMessageBoxSync(&amp;#123;
+          message: &#39;云应用客户端&#39; + config.version,
+          detail: &#39;*******&#39;,
+          type: &#39;info&#39;
+        &amp;#125;)
+      &amp;#125;
+    &amp;#125;,
+    &amp;#123;
+      label: &#39;打开 云应用&#39;,
+      click: () =&amp;gt; &amp;#123;
+        win.show()
+        win.setSkipTaskbar(false) // 显示任务栏图标
+      &amp;#125;
+    &amp;#125;,
+    &amp;#123;
+      label: &#39;退出 云应用&#39;,
+      click: () =&amp;gt; &amp;#123;
+        win.setSkipTaskbar(true) // 隐藏任务栏图标
+        win.destroy()
+        app.quit()
+      &amp;#125;
+    &amp;#125;
+  ])
+  tray.setToolTip(&#39;云应用&#39;)
+  tray.setContextMenu(contextMenu)
+  tray.on(&#39;click&#39;, () =&amp;gt; &amp;#123;
+    win.show()
+    win.setSkipTaskbar(false)
+  &amp;#125;)
+&amp;#125;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img data-src=&#34;./electron-tray/preview.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;🤔 其他参数请移步&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cuZWxlY3Ryb25qcy5vcmcvemgvZG9jcy9sYXRlc3QvYXBpL3RyYXk=&#34;&gt;官网&lt;/span&gt;查看详细信息&lt;/p&gt;
+&lt;p&gt;💬 有问题欢迎指出...&lt;/p&gt;
+ ]]></description>
+        </item>
+        <item>
+            <guid isPermalink="true">https://moorelxr.github.io/electron-process-communicate/</guid>
+            <title>electron进程通信</title>
+            <link>https://moorelxr.github.io/electron-process-communicate/</link>
+            <category term="electron" scheme="https://moorelxr.github.io/tags/electron/" />
+            <pubDate>Tue, 11 Oct 2022 18:00:53 +0800</pubDate>
+            <description><![CDATA[ &lt;h1 id=&#34;electron-进程间通信&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#electron-进程间通信&#34;&gt;#&lt;/a&gt; electron 进程间通信&lt;/h1&gt;
+&lt;h2 id=&#34;electron-为我们提供了-2-个-ipc进程间通信模块称为ipcmain和ipcrender&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#electron-为我们提供了-2-个-ipc进程间通信模块称为ipcmain和ipcrender&#34;&gt;#&lt;/a&gt; electron 为我们提供了 2 个 IPC (进程间通信) 模块，称为 &lt;code&gt;ipcMain&lt;/code&gt;  和 &lt;code&gt;ipcRender&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;ipcMain：主进程向渲染进程的异步通信&lt;/p&gt;
+&lt;p&gt;ipcRenderer：渲染进程向主进程发送消息&lt;/p&gt;
+&lt;h2 id=&#34;示例-1渲染进程向主进程发送消息&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#示例-1渲染进程向主进程发送消息&#34;&gt;#&lt;/a&gt; 示例 1：渲染进程向主进程发送消息&lt;/h2&gt;
+&lt;p&gt;渲染进程发消息：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import &amp;#123; ipcRenderer &amp;#125; from &#39;electron&#39;
+export default&amp;#123;
+  methods: &amp;#123;
+    minimizeWin() &amp;#123;
+      ipcRenderer.send(&#39;window-min&#39;)
+    &amp;#125;
+  &amp;#125;
+&amp;#125;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;主进程（background.js）接收消息：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import &amp;#123; app, BrowserWindow, ipcMain &amp;#125; from &#39;electron&#39;
+
+// 主进程接收消息
+ipcMain.on(&#39;window-min&#39;, () =&amp;gt; &amp;#123;
+  win.minimize()
+&amp;#125;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;示例-2主进程向渲染进程发送消息&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#示例-2主进程向渲染进程发送消息&#34;&gt;#&lt;/a&gt; 示例 2：主进程向渲染进程发送消息&lt;/h2&gt;
+&lt;p&gt;主进程（background.js）发送消息：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import &amp;#123; app, BrowserWindow, ipcMain &amp;#125; from &#39;electron&#39;
+
+ipcMain.on(&#39;window-destroy&#39;, () =&amp;gt; &amp;#123;
+  // 主进程发送消息
+  win.webContents.send(&#39;window-destroy&#39;)
+&amp;#125;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;渲染进程接收消息&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import &amp;#123; ipcRenderer &amp;#125; from &#39;electron&#39;
+export default&amp;#123;
+  mounted() &amp;#123;
+    ipcRenderer.on(&#39;window-destroy&#39;, (event, data) =&amp;gt; &amp;#123;
+      // do something
+    &amp;#125;)
+  &amp;#125;
+&amp;#125;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;示例-3双向通信&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#示例-3双向通信&#34;&gt;#&lt;/a&gt; 示例 3：双向通信&lt;/h2&gt;
+&lt;p&gt;渲染进程：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import &amp;#123; ipcRenderer &amp;#125; from &#39;electron&#39;
+export default&amp;#123;
+  data() &amp;#123;
+    return &amp;#123;
+      mountPath: &#39;&#39;
+    &amp;#125;
+  &amp;#125;,
+  methods: &amp;#123;
+    openFilePicker() &amp;#123;
+      // 向主进程发送消息
+      ipcRenderer.send(&#39;openfile&#39;)
+      // 接收主进程的消息
+      ipcRenderer.once(&#39;openfile&#39;, (event, data) =&amp;gt; &amp;#123;
+        // do some thing
+      &amp;#125;)
+    &amp;#125;
+  &amp;#125;
+&amp;#125;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;主进程（background.js）：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import &amp;#123; app, BrowserWindow, ipcMain, dialog &amp;#125; from &#39;electron&#39;
+const os = require(&#39;os&#39;)
+
+// 接收渲染进程的消息
+ipcMain.on(&#39;openfile&#39;, (event) =&amp;gt; &amp;#123;
+  dialog.showOpenDialog(&amp;#123;
+    defaultPath: os.homedir(),
+    properties: [&#39;openDirectory&#39;]
+  &amp;#125;).then(res =&amp;gt; &amp;#123;
+    event.sender.send(&#39;openfile&#39;, res.filePaths) // 向渲染进程发消息
+  &amp;#125;).catch(err =&amp;gt; &amp;#123;
+    console.log(err)
+  &amp;#125;)
+&amp;#125;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;以上就是进程通信的所有内容，🤔 有问题欢迎指出...&lt;/p&gt;
+ ]]></description>
+        </item>
+        <item>
+            <guid isPermalink="true">https://moorelxr.github.io/electron-introduce/</guid>
+            <title>eletron介绍</title>
+            <link>https://moorelxr.github.io/electron-introduce/</link>
+            <category term="electron" scheme="https://moorelxr.github.io/tags/electron/" />
+            <pubDate>Sun, 11 Sep 2022 22:03:14 +0800</pubDate>
+            <description><![CDATA[ &lt;h1 id=&#34;一-electron介绍&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#一-electron介绍&#34;&gt;#&lt;/a&gt; 一、electron 介绍&lt;/h1&gt;
+&lt;p&gt;&lt;em&gt;官网 (&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cuZWxlY3Ryb25qcy5vcmcv&#34;&gt;https://www.electronjs.org/&lt;/span&gt;)&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;使用 JavaScript，HTML 和 CSS 构建跨平台的桌面应用程序，通过将 Chromium 和 Node.js 合并到同一个运行环境中，兼容 Mac、Windows 和 Linux，可以构建出三个平台的应用程序。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;./electron-introduce/1.png&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;/p&gt;
+&lt;h2 id=&#34;二-优势&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#二-优势&#34;&gt;#&lt;/a&gt; 二、优势&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;大大降低了开发桌面应用的门槛&lt;/li&gt;
+&lt;li&gt;跨平台 可以打包成 Mac、Windows 和 Linux 三个平台的应用程序&lt;/li&gt;
+&lt;li&gt;Chromium 作为内核，无需考虑兼容性，一套代码兼容多个平台&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;三-需要用到的前端技术&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#三-需要用到的前端技术&#34;&gt;#&lt;/a&gt; 三、需要用到的前端技术&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Html、CSS、JavaScript、ES6&lt;/li&gt;
+&lt;li&gt;前端开发工具 Vue、Angular、React 等的一种&lt;/li&gt;
+&lt;li&gt;进阶使用可能还需要 node.js&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;四-项目搭建&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#四-项目搭建&#34;&gt;#&lt;/a&gt; 四、项目搭建&lt;/h2&gt;
+&lt;p&gt;1. 使用 vue-cli 创建 vue 项目&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;vue create electron-test
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;2. 安装插件 vue-cli-plugin-electron-builder&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;vue add electron-builder
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;安装完项目结构新增了以下内容：&lt;br /&gt;
+&lt;img data-src=&#34;./electron-introduce/2.jpg&#34; alt=&#34;App Screenshot&#34; /&gt;&lt;br /&gt;
+ 其中 background.js 为 electron 主进程相关操作&lt;/p&gt;
+&lt;p&gt;五、自定义打包命令&lt;br /&gt;
+ package.json 新增以下打包命令，文档参考：&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cuZWxlY3Ryb24uYnVpbGQvY2xp&#34;&gt;https://www.electron.build/cli&lt;/span&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;quot;electron:build-linux-arm64&amp;quot;: &amp;quot;vue-cli-service electron:build --linux --arm64 -p never&amp;quot;,
+&amp;quot;electron:build-linux-x64&amp;quot;: &amp;quot;vue-cli-service electron:build --linux --x64 -p never&amp;quot;,
+&amp;quot;electron:build-win64&amp;quot;: &amp;quot;vue-cli-service electron:build --win --x64 -p never&amp;quot;,
+&amp;quot;electron:build-win32&amp;quot;: &amp;quot;vue-cli-service electron:build --win --ia32 -p never&amp;quot;,
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;注意：linux 安装包需要在 linux 系统上编译，另外 linux arm64 系统的安装包在 arm64 上编译会报错，需要在 linux x64 上交叉编译&lt;/p&gt;
+ ]]></description>
+        </item>
+    </channel>
+</rss>
