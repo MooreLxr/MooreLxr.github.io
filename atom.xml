@@ -8,9 +8,395 @@
     <author>
       <name>sunrise</name>
     </author>
-    <updated>2024-02-19T01:59:37.000Z</updated>
+    <updated>2024-10-08T08:48:30.000Z</updated>
     <category term="心之所想" />
     <category term="" />
+    <entry>
+        <id>https://moorelxr.github.io/el-table/</id>
+        <title>el-table 实现多级表头、合并行、合并表头、表头文字换行</title>
+        <link rel="alternate" href="https://moorelxr.github.io/el-table/"/>
+        <content type="html">&lt;p&gt;后台项目中经常会出现复杂表格的使用，以下列举几个常见表格的实现&lt;/p&gt;
+&lt;h2 id=&#34;一-多级表头&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#一-多级表头&#34;&gt;#&lt;/a&gt; 一、多级表头&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;el-table
+  :data=&amp;quot;tableData&amp;quot;
+  border
+  style=&amp;quot;width: 100%;&amp;quot;
+  :cell-style=&amp;quot;&amp;#123; &#39;text-align&#39;: &#39;center&#39; &amp;#125;&amp;quot;
+  :header-cell-style=&amp;quot;&amp;#123; &#39;text-align&#39;: &#39;center&#39; &amp;#125;&amp;quot;
+&amp;gt;
+    &amp;lt;el-table-column 
+      v-for=&amp;quot;(col, i) in tableCols&amp;quot;
+      :label=&amp;quot;col.label&amp;quot;
+      :prop=&amp;quot;col.prop&amp;quot;
+      :key=&amp;quot;i&amp;quot;
+      :width=&amp;quot;col.width&amp;quot;
+      :show-overflow-tooltip=&amp;quot;col.showOverflowTooltip&amp;quot;
+      :formatter=&amp;quot;col.formatter &amp;amp;&amp;amp; col.formatter&amp;quot;
+    &amp;gt;
+      &amp;lt;template v-if=&amp;quot;col.children&amp;quot;&amp;gt;
+        &amp;lt;el-table-column 
+          v-for=&amp;quot;(subCol, j) in col.children&amp;quot;
+          :label=&amp;quot;subCol.label&amp;quot;
+          :prop=&amp;quot;subCol.prop&amp;quot;
+          :key=&amp;quot;j&amp;quot;
+          :formatter=&amp;quot;subCol.formatter &amp;amp;&amp;amp; subCol.formatter&amp;quot;
+          :class-name=&amp;quot;col.className&amp;quot;
+          :width=&amp;quot;subCol.width&amp;quot;
+        &amp;gt;
+          &amp;lt;template v-if=&amp;quot;subCol.children&amp;quot;&amp;gt;
+            &amp;lt;el-table-column 
+              v-for=&amp;quot;(item, h) in subCol.children&amp;quot;
+              :label=&amp;quot;item.label&amp;quot;
+              :prop=&amp;quot;item.prop&amp;quot;
+              :key=&amp;quot;h&amp;quot;
+              :formatter=&amp;quot;item.formatter &amp;amp;&amp;amp; item.formatter&amp;quot;
+              :class-name=&amp;quot;item.className&amp;quot;
+              :width=&amp;quot;item.width&amp;quot;
+            &amp;gt;&amp;lt;/el-table-column&amp;gt;
+          &amp;lt;/template&amp;gt;
+        &amp;lt;/el-table-column&amp;gt;
+      &amp;lt;/template&amp;gt;
+  &amp;lt;/el-table-column&amp;gt;
+&amp;lt;/el-table&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;script&amp;gt;
+export default &amp;#123;
+  name: &#39;complex-table&#39;,
+  data() &amp;#123;
+    return &amp;#123;
+      tableCols: [
+        &amp;#123; label: &#39;日期&#39;, prop: &#39;date&#39;, width: 150, rowspan: true &amp;#125;,
+        &amp;#123;
+          label: &#39;配送信息&#39;,
+          prop: &#39;shipingInfo&#39;,
+          rowspan: true,
+          children: [
+            &amp;#123; label: &#39;姓名&#39;, prop: &#39;name&#39;, rowspan: true &amp;#125;,
+            &amp;#123;
+              label: &#39;地址&#39;,
+              prop: &#39;addr&#39;,
+              rowspan: false,
+              children: [
+                &amp;#123; label: &#39;省份&#39;, prop: &#39;province&#39;, rowspan: false &amp;#125;,
+                &amp;#123; label: &#39;市区&#39;, prop: &#39;city&#39;, rowspan: false &amp;#125;,
+                &amp;#123; label: &#39;地址&#39;, prop: &#39;address&#39;, rowspan: false &amp;#125;
+              ]
+            &amp;#125;
+          ]
+        &amp;#125;
+      ],
+      tableData: [
+        &amp;#123; date: &#39;2016-05-03&#39;, name: &#39;王小虎&#39;, province: &#39;上海&#39;, city: &#39;普陀区&#39;, address: &#39;上海市普陀区金沙江路 1518 弄&#39;&amp;#125;,
+        &amp;#123; date: &#39;2016-05-02&#39;, name: &#39;王小虎&#39;, province: &#39;上海&#39;, city: &#39;普陀区&#39;, address: &#39;上海市普陀区金沙江路 1518 弄&#39;&amp;#125;,
+        &amp;#123; date: &#39;2016-05-04&#39;, name: &#39;王晓六&#39;, province: &#39;江西&#39;, city: &#39;普陀区&#39;, address: &#39;上海市普陀区金沙江路 1518 弄&#39;&amp;#125;,
+        &amp;#123; date: &#39;2016-05-01&#39;, name: &#39;王晓六&#39;, province: &#39;江西&#39;, city: &#39;普陀区&#39;, address: &#39;上海市普陀区金沙江路 1518 弄&#39;&amp;#125;,
+        &amp;#123; date: &#39;2016-05-08&#39;, name: &#39;小海&#39;, province: &#39;江西&#39;, city: &#39;普陀区&#39;, address: &#39;上海市普陀区金沙江路 1518 弄&#39;&amp;#125;,
+        &amp;#123; date: &#39;2016-05-06&#39;, name: &#39;笑笑&#39;, province: &#39;福建&#39;, city: &#39;普陀区&#39;, address: &#39;上海市普陀区金沙江路 1518 弄&#39;&amp;#125;,
+        &amp;#123; date: &#39;2016-05-07&#39;, name: &#39;筱筱&#39;, province: &#39;福建&#39;, city: &#39;普陀区&#39;, address: &#39;上海市普陀区金沙江路 1518 弄&#39;&amp;#125;
+      ]
+    &amp;#125;
+  &amp;#125;
+&amp;#125;
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;展示效果：&lt;br /&gt;
+&lt;img data-src=&#34;./1.png&#34; alt=&#34;Alt text&#34; /&gt;&lt;/p&gt;
+&lt;h2 id=&#34;二-合并行&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#二-合并行&#34;&gt;#&lt;/a&gt; 二、合并行&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;el-table 
+  :data=&amp;quot;tableData&amp;quot;
+  border
+  :span-method=&amp;quot;objectSpanMethod&amp;quot;
+&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday1&amp;quot; label=&amp;quot;周一&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday2&amp;quot; label=&amp;quot;周二&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday3&amp;quot; label=&amp;quot;周三&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday4&amp;quot; label=&amp;quot;周四&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday5&amp;quot; label=&amp;quot;周五&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday6&amp;quot; label=&amp;quot;周六&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday7&amp;quot; label=&amp;quot;周日&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+&amp;lt;/el-table&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;script&amp;gt;
+export default &amp;#123;
+  data() &amp;#123;
+    return &amp;#123;
+      tableData: [
+        &amp;#123;
+          rotaId: &#39;xxx-1&#39;,
+          rotaName: &#39;值班表名1&#39;,
+          dutyTypeId: &amp;quot;type0001&amp;quot;,
+          dutyTypeName: &amp;quot;值班类型1&amp;quot;,
+          &#39;2024-09-16&#39;: [],
+          &#39;2024-09-17&#39;: [],
+          &#39;2024-09-18&#39;: [],
+          &#39;2024-09-19&#39;: [],
+          &#39;2024-09-20&#39;: [],
+          &#39;2024-09-21&#39;: [],
+          &#39;2024-09-22&#39;: []
+        &amp;#125;,
+        &amp;#123;
+          rotaId: &#39;xxx-1&#39;,
+          rotaName: &#39;值班表名1&#39;,
+          dutyTypeId: &amp;quot;type0002&amp;quot;,
+          dutyTypeName: &amp;quot;值班类型2&amp;quot;,
+          &#39;2024-09-16&#39;: [],
+          &#39;2024-09-17&#39;: [],
+          &#39;2024-09-18&#39;: [],
+          &#39;2024-09-19&#39;: [],
+          &#39;2024-09-20&#39;: [],
+          &#39;2024-09-21&#39;: [],
+          &#39;2024-09-22&#39;: []
+        &amp;#125;,
+        &amp;#123;
+          rotaId: &#39;xxx-2&#39;,
+          rotaName: &#39;值班表名2&#39;,
+          dutyTypeId: &amp;quot;type0003&amp;quot;,
+          dutyTypeName: &amp;quot;值班类型3&amp;quot;,
+          &#39;2024-09-16&#39;: [],
+          &#39;2024-09-17&#39;: [],
+          &#39;2024-09-18&#39;: [],
+          &#39;2024-09-19&#39;: [],
+          &#39;2024-09-20&#39;: [],
+          &#39;2024-09-21&#39;: [],
+          &#39;2024-09-22&#39;: []
+        &amp;#125;
+      ]
+    &amp;#125;
+  &amp;#125;,
+  methods: &amp;#123;
+    // 行合并方法
+    objectSpanMethod (&amp;#123; row, column, rowIndex, columnIndex &amp;#125;) &amp;#123;
+      const dataProvider = this.tableData
+      const cellValue = row[column.property]
+      
+      if (cellValue || cellValue===0) &amp;#123;
+        let prevRow = dataProvider[rowIndex - 1] // 上一条数据
+        let nextRow = dataProvider[rowIndex + 1] // 下一条数据
+        // 当上一条数据等于下一条数据
+        if (prevRow &amp;amp;&amp;amp; prevRow[column.property] === cellValue) &amp;#123;
+          return &amp;#123; rowspan: 0, colspan: 0 &amp;#125;
+        &amp;#125; else &amp;#123;
+          let rowspan = 1
+          while (nextRow &amp;amp;&amp;amp; nextRow[column.property] === cellValue) &amp;#123;
+            rowspan++
+            nextRow = dataProvider[rowspan + rowIndex]
+          &amp;#125;
+          if (rowspan &amp;gt; 1) return &amp;#123; rowspan, colspan: 1 &amp;#125;
+        &amp;#125;
+      &amp;#125;
+    &amp;#125;
+  &amp;#125;
+&amp;#125;
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;展示效果：&lt;br /&gt;
+&lt;img data-src=&#34;./2.png&#34; alt=&#34;Alt text&#34; /&gt;&lt;/p&gt;
+&lt;h2 id=&#34;三-合并表头&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#三-合并表头&#34;&gt;#&lt;/a&gt; 三、合并表头&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;el-table
+  :data=&amp;quot;tableData&amp;quot;
+  :span-method=&amp;quot;objectSpanMethod&amp;quot;
+  :header-cell-style=&amp;quot;headRowStyle&amp;quot;
+  height=&amp;quot;calc(100% - 90px)&amp;quot;
+  border
+&amp;gt;
+  &amp;lt;!-- 合并前两列的表头 --&amp;gt;
+  &amp;lt;el-table-column align=&amp;quot;center&amp;quot; label=&amp;quot;值班信息&amp;quot;&amp;gt;
+    &amp;lt;el-table-column prop=&amp;quot;rotaName&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+    &amp;lt;el-table-column prop=&amp;quot;dutyTypeName&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+  &amp;lt;/el-table-column&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday1&amp;quot; label=&amp;quot;周一&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday2&amp;quot; label=&amp;quot;周二&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday3&amp;quot; label=&amp;quot;周三&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday4&amp;quot; label=&amp;quot;周四&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday5&amp;quot; label=&amp;quot;周五&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday6&amp;quot; label=&amp;quot;周六&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday7&amp;quot; label=&amp;quot;周日&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+&amp;lt;/el-table&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;// 表头合并的方法
+headRowStyle(&amp;#123; row, colunm, rowIndex, columnIndex &amp;#125;) &amp;#123;
+  if (rowIndex === 1) &amp;#123;
+    //这里为了是将第二列的表头隐藏，就形成了合并表头的效果
+    return &amp;#123; display: &#39;none&#39; &amp;#125;
+  &amp;#125;
+  return &amp;quot;background:#f5f7fa&amp;quot;
+&amp;#125;,
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;展示效果：&lt;br /&gt;
+&lt;img data-src=&#34;./3.png&#34; alt=&#34;Alt text&#34; /&gt;&lt;/p&gt;
+&lt;h2 id=&#34;四-表头文字换行&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#四-表头文字换行&#34;&gt;#&lt;/a&gt; 四、表头文字换行&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;el-table
+  :data=&amp;quot;tableData&amp;quot;
+  height=&amp;quot;calc(100% - 90px)&amp;quot;
+  border
+&amp;gt;
+ &amp;lt;!-- 加上\n可实现换行 --&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday1&amp;quot; label=&amp;quot;周一\n09-16&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday2&amp;quot; label=&amp;quot;周二\n09-17&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday3&amp;quot; label=&amp;quot;周三\n09-18&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday4&amp;quot; label=&amp;quot;周四\n09-19&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday5&amp;quot; label=&amp;quot;周五\n09-20&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday6&amp;quot; label=&amp;quot;周六\n09-21&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+  &amp;lt;el-table-column prop=&amp;quot;weekday7&amp;quot; label=&amp;quot;周日\n09-22&amp;quot; width=&amp;quot;180&amp;quot; align=&amp;quot;center&amp;quot;&amp;gt;&amp;lt;/el-table-column&amp;gt;
+&amp;lt;/el-table&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;/*表头换行 加这段css代码*/
+::v-deep .el-table th.el-table__cell &amp;gt; .cell &amp;#123;
+  white-space: pre;
+&amp;#125;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;展示效果：&lt;br /&gt;
+&lt;img data-src=&#34;./4.png&#34; alt=&#34;Alt text&#34; /&gt;&lt;/p&gt;
+</content>
+        <category term="element-ui" scheme="https://moorelxr.github.io/tags/element-ui/" />
+        <updated>2024-10-08T08:48:30.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://moorelxr.github.io/redis/</id>
+        <title>redis</title>
+        <link rel="alternate" href="https://moorelxr.github.io/redis/"/>
+        <content type="html">&lt;h2 id=&#34;下载docker&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#下载docker&#34;&gt;#&lt;/a&gt; 下载 docker&lt;/h2&gt;
+&lt;p&gt;先下载 docker desktop，用来跑 redis&lt;/p&gt;
+&lt;p&gt;docker desktop&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cuZG9ja2VyLmNvbS9wcm9kdWN0cy9kb2NrZXItZGVza3RvcC8=&#34;&gt; 下载地址&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;./redis/image.png&#34; alt=&#34;alt text&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;打开 docker desktop, 使用时需要科学上网，按下图进行配置即可&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;./redis/image2.png&#34; alt=&#34;alt text&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;在 docker desktop 搜索框搜索 redis，点击 run，把 redis 官方镜像下载并跑起来。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;./redis/image3.png&#34; alt=&#34;alt text&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;./redis/image.png&#34; alt=&#34;alt text&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;注：他让你填容器的信息:&lt;br /&gt;
+ &lt;code&gt;端口映射&lt;/code&gt; 就是把主机的 6379 端口映射到容器内的 6379 端口，这样就能直接通过本机端口访问容器内的服务了，&lt;br /&gt;
+ &lt;code&gt;Volumes 指定数据卷&lt;/code&gt; 用本机的任意一个目录挂载到容器内的 /data 目录，这样数据就会保存在本机。&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;./redis/image5.png&#34; alt=&#34;alt text&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;这就是 redis 跑起来后的日志&lt;/p&gt;
+&lt;h2 id=&#34;下载redis-gui工具redisinsight-anotherredisdesktopmanager-选择一个安装即可&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#下载redis-gui工具redisinsight-anotherredisdesktopmanager-选择一个安装即可&#34;&gt;#&lt;/a&gt; 下载 redis GUI 工具（RedisInsight、AnotherRedisDesktopManager 选择一个安装即可）&lt;/h2&gt;
+&lt;h3 id=&#34;redisinsight&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#redisinsight&#34;&gt;#&lt;/a&gt; RedisInsight&lt;/h3&gt;
+&lt;p&gt;它是 redis 官方出的 GUI 工具，redisInsight&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9yZWRpcy5pby9pbnNpZ2h0Lw==&#34;&gt; 下载地址&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;./redis/image6.png&#34; alt=&#34;alt text&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;打开 RedisInsight，连接刚才用 docker 跑的 redis server：&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;./redis/image7.png&#34; alt=&#34;alt text&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;查看该服务所创建的所有 key&lt;br /&gt;
+&lt;img data-src=&#34;./redis/image8.png&#34; alt=&#34;alt text&#34; /&gt;&lt;/p&gt;
+&lt;h3 id=&#34;anotherredisdesktopmanager&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#anotherredisdesktopmanager&#34;&gt;#&lt;/a&gt; AnotherRedisDesktopManager&lt;/h3&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2psaHgxMjM0NTYvYXJ0aWNsZS9kZXRhaWxzLzEzMjI5NTI4NQ==&#34;&gt;参考&lt;/span&gt;&lt;/p&gt;
+&lt;h2 id=&#34;nodejs中使用redis&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#nodejs中使用redis&#34;&gt;#&lt;/a&gt; node.js 中使用 redis&lt;/h2&gt;
+&lt;h3 id=&#34;创建nest项目&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#创建nest项目&#34;&gt;#&lt;/a&gt; 创建 nest 项目&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;npm install g @nestjs/cli
+nest new projectName
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;安装redis-创建service和module&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#安装redis-创建service和module&#34;&gt;#&lt;/a&gt; 安装 redis, 创建 service 和 module&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;npm install --save redis
+nest g module redis
+nest g service redis
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;redis.module 中连接 redis, 并通过 provide 将 redis 传给 redis.service&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import &amp;#123; Module &amp;#125; from &#39;@nestjs/common&#39;;
+import &amp;#123; createClient &amp;#125; from &#39;redis&#39;;
+import &amp;#123; RedisService &amp;#125; from &#39;./redis.service&#39;;
+
+@Module(&amp;#123;
+  providers: [
+    RedisService,
+    &amp;#123;
+      provide: &#39;REDIS_CLIENT&#39;,
+      async useFactory() &amp;#123;
+        const client = createClient(&amp;#123;
+          socket: &amp;#123;
+            host: &#39;localhost&#39;,
+            port: 6379
+          &amp;#125;
+        &amp;#125;);
+        await client.connect();
+        return client;
+      &amp;#125;
+    &amp;#125;
+  ],
+  exports: [RedisService]
+&amp;#125;)
+export class RedisModule &amp;#123;&amp;#125;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;然后在 redis.service 中注入 REDIS_CLIENT，并封装一些操作 redis 的方法&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import &amp;#123; Inject, Injectable &amp;#125; from &#39;@nestjs/common&#39;;
+import &amp;#123; RedisClientType &amp;#125; from &#39;redis&#39;;
+
+@Injectable()
+export class RedisService &amp;#123;
+
+    @Inject(&#39;REDIS_CLIENT&#39;)
+    private redisClient: RedisClientType;
+
+    // 定义方法
+    async getPositionsList(key: string) &amp;#123;
+        ...
+    &amp;#125;
+&amp;#125;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;app.module.ts 引入 redis.service，即可使用该文件中定义的方法&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import &amp;#123; BadRequestException, Controller, Get, Inject, Query &amp;#125; from &#39;@nestjs/common&#39;;
+import &amp;#123; AppService &amp;#125; from &#39;./app.service&#39;;
+import &amp;#123; RedisService &amp;#125; from &#39;./redis/redis.service&#39;;
+
+@Controller()
+export class AppController &amp;#123;
+  constructor(private readonly appService: AppService) &amp;#123;&amp;#125;
+
+  @Inject(RedisService)
+  private redisService: RedisService;
+
+  @Get(&#39;getPos&#39;)
+  async getPos() &amp;#123;
+    try &amp;#123;
+      await this.redisService.getPositionsList(&#39;positions&#39;);
+    &amp;#125; catch(e) &amp;#123;
+      throw new BadRequestException(e.message);
+    &amp;#125;
+    return &amp;#123;
+      message: &#39;添加成功&#39;,
+      statusCode: 200
+    &amp;#125;
+  &amp;#125;
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+        <category term="redis" scheme="https://moorelxr.github.io/tags/redis/" />
+        <updated>2024-05-24T08:56:19.000Z</updated>
+    </entry>
+    <entry>
+        <id>https://moorelxr.github.io/nvm/</id>
+        <title>nvm</title>
+        <link rel="alternate" href="https://moorelxr.github.io/nvm/"/>
+        <content type="html">&lt;h3 id=&#34;下载地址&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#下载地址&#34;&gt;#&lt;/a&gt; 下载地址：&lt;/h3&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9naXRodWIuY29tL2NvcmV5YnV0bGVyL252bS13aW5kb3dzL3JlbGVhc2Vz&#34;&gt;https://github.com/coreybutler/nvm-windows/releases&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;./image.png&#34; alt=&#34;alt text&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;就正常的傻瓜式安装（注意：如果默认安装在 C 盘，则无需配置环境变量）&lt;/p&gt;
+&lt;p&gt;检测安装是否成功：&lt;br /&gt;
+&lt;img data-src=&#34;./version.png&#34; alt=&#34;alt text&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;正常出现版本号则表示安装成功&lt;/p&gt;
+&lt;h3 id=&#34;配置环境变量&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#配置环境变量&#34;&gt;#&lt;/a&gt; 配置环境变量：&lt;/h3&gt;
+&lt;p&gt;&lt;img data-src=&#34;./path.png&#34; alt=&#34;alt text&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;圈出来的地方改成自己安装的对应路径即可&lt;/p&gt;
+&lt;h3 id=&#34;配置镜像源&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#配置镜像源&#34;&gt;#&lt;/a&gt; 配置镜像源&lt;/h3&gt;
+&lt;p&gt;找到 nvm 文件位置，点开 setting&lt;/p&gt;
+&lt;p&gt;&lt;img data-src=&#34;./setting.png&#34; alt=&#34;alt text&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;输入下面的镜像源&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;node_mirror: https://npm.taobao.org/mirrors/node/
+npm_mirror: https://npm.taobao.org/mirrors/npm/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;使用&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#使用&#34;&gt;#&lt;/a&gt; 使用&lt;/h3&gt;
+&lt;p&gt;1. 先卸载之前的 node.js&lt;br /&gt;
+2. 在刚刚的 nvm 文件位置打开 cmd&lt;br /&gt;
+3. 输入以下代码查看 nvm 可安装的 node 版本&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;nvm ls                      // 看安装的所有node.js的版本
+nvm list available          // 查显示可以安装的所有node.js的版本
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;4. 安装所对应的版本&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;nvm install 版本号      // 例如：nvm install 14.19.0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;5. 切换到安装的版本&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;nvm use 版本号           // 切换到使用指定的nodejs版本
+&lt;/code&gt;&lt;/pre&gt;
+</content>
+        <updated>2024-05-07T07:31:19.000Z</updated>
+    </entry>
     <entry>
         <id>https://moorelxr.github.io/el-tree-lazy/</id>
         <title>el-tree懒加载树 手动触发load更新</title>
@@ -143,7 +529,11 @@ export default &amp;#123;
     loadLazyTree(node, resolve) &amp;#123;
       const isRootNode = node.level === 0 ? true : false
       const sendData = &amp;#123;
-        parentId: isRootNode ? null : node.data.id
+        parentId: isRootNode ? &#39;&#39; : node.data.id
+      &amp;#125;
+      if (isRootNode) &amp;#123;
+        this.rootNode = node
+        this.rootLazyNodeResolve = resolve
       &amp;#125;
       getPrepPlanOrganTree(sendData).then(res =&amp;gt; &amp;#123;
         resolve(res.data)
@@ -159,10 +549,19 @@ export default &amp;#123;
     &amp;#125;,
     // 重载当前节点的父节点
     loadParentNode() &amp;#123;
-      const treeNode = this.$refs.tree.getNode(this.currentNode.id)
-      treeNode.parent.loaded = false
-      treeNode.parent.childNodes = []
-      treeNode.parent.loadData() // 刷新父节点数据
+      const node = this.$refs.tree.getNode(this.currentNode.id)
+      if (node.parent) &amp;#123;
+        node.parent.loaded = false
+        node.parent.childNodes = []
+        node.parent.loadData() // 刷新父节点数据
+      &amp;#125; else &amp;#123;
+        this.loadRootNode()
+      &amp;#125;
+    &amp;#125;,
+    // 重载根节点
+    loadRootNode() &amp;#123;
+      this.rootNode.childNodes = []
+      this.loadLazyTree(this.rootNode, this.rootLazyNodeResolve)
     &amp;#125;,
     // 获取选中的子节点
     handleNodeClick(data, node) &amp;#123;
@@ -173,7 +572,6 @@ export default &amp;#123;
 &amp;#125;
 &amp;lt;/script&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;亲试 node.loadData () 有时候获取不到导致报错&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cuamlhbnNodS5jb20vcC8wZTFkNGQyODEwNGU=&#34;&gt;el-tree 懒加载 load 手动触发 load 更新的三种方法&lt;/span&gt;&lt;br /&gt;
 &lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cuZGlhbmppbGluZ3F1LmNvbS8xOTA5NjMuaHRtbA==&#34;&gt; ElementUi Tree 树形控件的使用（增、删）&lt;/span&gt;&lt;/p&gt;
 </content>
@@ -396,7 +794,8 @@ export default &amp;#123;
 &lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL2NoYXJ0Lm1hamgudG9wLw==&#34;&gt;http://chart.majh.top/&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;ps: 各种丰富的 echart 图集效果&lt;/p&gt;
 &lt;h3 id=&#34;渐变色取色工具&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#渐变色取色工具&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt; 渐变色取色工具&lt;/h3&gt;
-&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL2JqLjkxam9pbi5jb20vdGlhb3NlLmh0bWw=&#34;&gt;http://bj.91join.com/tiaose.html&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cDovL2JqLjkxam9pbi5jb20vdGlhb3NlLmh0bWw=&#34;&gt;http://bj.91join.com/tiaose.html&lt;/span&gt;&lt;br /&gt;
+&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9jc3MuYnFyZGguY29tL2dyYWRpZW50&#34;&gt;https://css.bqrdh.com/gradient&lt;/span&gt;&lt;/p&gt;
 &lt;h3 id=&#34;box-shadow阴影在线调整&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#box-shadow阴影在线调整&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt;box-shadow 阴影在线调整&lt;/h3&gt;
 &lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9ib3gtc2hhZG93LmRldi8=&#34;&gt;https://box-shadow.dev/&lt;/span&gt;&lt;/p&gt;
 &lt;h3 id=&#34;兼容性查询&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#兼容性查询&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt; 兼容性查询&lt;/h3&gt;
@@ -432,8 +831,6 @@ export default &amp;#123;
 &lt;h3 id=&#34;ppt-模板免费下载&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#ppt-模板免费下载&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt;ppt 模板免费下载：&lt;/h3&gt;
 &lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cuMnBwdC5jb20vcHB0Lmh0bWw=&#34;&gt;https://www.2ppt.com/ppt.html&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly93d3cuNTFwcHRtb2Jhbi5jb20vZS9zZWFyY2gvcmVzdWx0Lz9zZWFyY2hpZD0yNzgyMA==&#34;&gt;https://www.51pptmoban.com/e/search/result/?searchid=27820&lt;/span&gt;&lt;/p&gt;
-&lt;h3 id=&#34;微博图床&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#微博图床&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt; 微博图床&lt;/h3&gt;
-&lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly9waWMuZ2ltaG95LmNvbS8=&#34;&gt;https://pic.gimhoy.com/&lt;/span&gt;&lt;/p&gt;
 &lt;h3 id=&#34;云盘资源搜索平台&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#云盘资源搜索平台&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt; 云盘资源搜索平台&lt;/h3&gt;
 &lt;p&gt;&lt;span class=&#34;exturl&#34; data-url=&#34;aHR0cHM6Ly91cHl1bnNvLmNvbS8=&#34;&gt;https://upyunso.com/&lt;/span&gt;&lt;/p&gt;
 &lt;h3 id=&#34;贵金属价格查询&#34;&gt;&lt;a class=&#34;anchor&#34; href=&#34;#贵金属价格查询&#34;&gt;#&lt;/a&gt; &amp;gt;&amp;gt; 贵金属价格查询&lt;/h3&gt;
